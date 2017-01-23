@@ -1,252 +1,610 @@
 <!doctype html>
 <html>
+
 <head>
-    <meta charset="utf8" />
-    <title>floodfill.js</title>
-    <style>
-        .border {border:1px solid #ccc;}
-        td {width:400px;border-bottom:1px solid #eee;border-top:1px solid #eee;}
-    </style>
+	<meta charset="UTF-8">
+	<title>Masterina </title>
+
 </head>
-<body>
-    
-    <table>
-        <tr>
-            <td>
-                <h2>Circle Before</h2>
-                <img id="image_circle" src="circle.png" class="border" />
-            </td><td>
-                <h2>Circle After</h2>
-                <canvas id="canvas_circle" width="128" height="128" class="border"></canvas>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h2>Circle Anti-alias Before</h2>
-                <img id="image_circle_spec" src="circle.png" class="border" />
-            </td><td>
-                <h2>Circle Anti-alias After</h2>
-                <canvas id="canvas_circle_spec" width="128" height="128" class="border"></canvas>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h2>Star Before</h2>
-                <img id="image_star" src="star.png" class="border" />
-            </td><td>
-                <h2>Star After</h2>
-                <canvas id="canvas_star" width="128" height="128" class="border"></canvas>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h2>Star Crop Before</h2>
-                <img id="image_star_crop" src="star.png" class="border" />
-            </td><td>
-                <h2>Star Crop After</h2>
-                <canvas id="canvas_star_crop" width="128" height="128" class="border"></canvas>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h2>Circle Before Clear</h2>
-                <img id="image_circle_clear" src="circle.png" class="border" />
-            </td><td>
-                <h2>Circle After Clear</h2>
-                <canvas id="canvas_circle_clear" width="128" height="128" class="border"></canvas>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h2>Circle Before Tolerance</h2>
-                <img id="image_circle_tolerance" src="circle.png" class="border" />
-            </td><td>
-                <h2>Circle After Tolerance</h2>
-                <canvas id="canvas_circle_tolerance" width="128" height="128" class="border"></canvas>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h2>Circle ArrayBuffer Before</h2>
-                <img id="image_circle_array" src="circle.png" class="border" />
-            </td><td>
-                <h2>Circle ArrayBuffer After</h2>
-                <canvas id="canvas_circle_array" width="128" height="128" class="border"></canvas>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h2>Circle Close Tolerance Before</h2>
-                <img id="image_circle_close" src="circle.png" class="border" />
-            </td><td>
-                <h2>Circle Close Tolerance After</h2>
-                <canvas id="canvas_circle_close" width="128" height="128" class="border"></canvas>
-            </td>
-        </tr>
+<script type="text/javascript" src="masterina.js"></script>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="fileSaver.js"></script>
+ <script type="text/javascript" src="floodfill.min.js"></script>
 
+<script type="text/javascript" src="paper-full.js"></script>
+<style>
+ 
 
-    </table>
+ body 
+  {
+  	
+	margin: 0px;
+	padding: 0px;
+	font-size:120px;
+	position: fixed;
+}
+  canvas
+  { 
+	margin: 0px;
+	padding: 0px;
+	position:fixed;
+	left:0px;
+    top:0px;
+	
+  } 
+ img
+  { 
 
-        <!--
+  	cursor:auto;
+	margin: 0px;
+	padding: 0px;
+	position:fixed;
+	
+  } 
+  input
+  {
+    margin: 0px;
+	padding: 0px;
+	position:fixed;
+  }
+ 
+</style>
+ 
 
-    <script type="text/javascript">
-        (function(){
-            var min = window.location.search.indexOf("min=1")>=0;
-            var scr = min?'../floodfill.min.js':'../floodfill.js';
-            var str = '<script type="text/javascript" src="'+scr+'"></script>';
-            document.write(str);
-        })();
-    </script>
-        //-->
+</body >
+	
+	
+	<canvas id="myCanvas" width=2200 height=1100 style="top:0px;left:0px; z-index: 2; "></canvas> 
+	<canvas id="myCanvas2" width=2200 height=1100  style="top:0px;left:0px; z-index: 1; "></canvas> 
+	<canvas id="paperCanvas" width=2200 height=1100  style="top:0px;left:0px; z-index:3; "></canvas> 
+	<canvas id="saveCanvas" width=2200 height=1100  style="top:0px;left:0px; z-index:-5; "></canvas> 
+	<canvas id="Color" type="image" style="width:8%;height:16%;left:91%;top:18%;  z-index: 9; "></canvas>
+	<canvas id="ColorShow" src="frame.jpg" style="width:8%;height:4%;left:91%;top:11%;  z-index: 8; "></canvas> 
+	
+	
+	
+	<img id="sideImg" src="side.png" style = "top:10%;width:10%;height:100%; left: 0%;z-index: 2;">
+	<img id="side2Img" src="side.png" style = "top:10%;width:10%;height:100%; left: 90%;z-index: 2;">
+	<img id="topImg" src="bottom.png" style = "top:0%; width:100%;height:10%;left: 0%;z-index: 2;">
+	<img id="masterinaLogo" src="LOGO.png" style = "top:1%;left: 1%;height:8%;z-index: 2;">
+	<img id="bottomImg" src="bottom.png" style = "top:90%; width:100%;height:10%;left: 0%;z-index: 2;">
+	
+	<input id="New" type="image" src="NEW_BTN.png"  style= "top:11%; left: 1%; width:8%; height:4%; z-index: 6" onclick="funcNew()"></input>
+	<input id="lineThikBtn" type="image" src="thik2.png"  style= "top:21%; left: 1%; width:8%; height:width; z-index: 6" onclick="funcLineThik()"></input>
+	<input id="pieTypeBtn" type="image" src="pie1.png"  style= "top:38%; left: 1%; width:8%; height:width; z-index: 6" onclick="funcPieType()"></input>
+	<input id="MirrorBtn" type="image" src="mirror1.png"  style= "top:55%; left: 1%; width:8%; height:width; z-index: 6" onclick="funcMirror()"></input>
+	<input id="lineTypeBtn" type="image" src="line1.png"  style= "top:72%; left: 1%; width:8%; height:width; z-index: 6" onclick="funcLineType()"></input>
+	<input id="Fill" type="image" src="fill.png"  style= "top:38%; left: 91%; width:8%; height:width; z-index: 6" onclick="funcFill()"></input>
+	<input id="FillCir" type="image" src="cirFill.png"  style= "top:55%; left: 91%; width:8%; height:width; z-index: 6" onclick="funcFillCir()"></input>
+	<input id="CirLine" type="image" src="cir.png"  style= "top:72%; left: 91%; width:8%; height:width; z-index: 6" onclick="funcCirLine()"></input>
+	<input id="Undo" type="image" src="undo.png"  style= "top:92%; left: 70%; width:4%; height:width; z-index: 6" onclick="funcUndo()"></input>
+	<input id="Save" type="image" src="save.png"  style= "top:92%; left: 75%; width:4%; height:width; z-index: 6" onclick="funcSave()"></input>
+	<input id="Pic" type="image" src="pic.png"  style= "top:92%; left: 80%; width:4%; height:width; z-index: 6" onclick="funcPic()"></input>
+	<input id="Camera" type="image" src="camera.png"  style= "top:92%; left: 85%; width:4%; height:width; z-index: 6" onclick="funcCamera()"></input>
+	
 
-    <script type="text/javascript" src="../floodfill.min.js"></script>
-
-    <script type="text/javascript">
-        
-        //Circle default fill
-        var circle = document.getElementById('image_circle');
-        circle.onload = function() {
-
-            // Create a canvas with which we can edit an image
-            var canvas = document.getElementById('canvas_circle');
-            var context = canvas.getContext('2d');
-            context.drawImage(circle, 0, 0);
-
-            // Flood fill the circle starting at point (50, 75) using the color red (255, 0, 0)
-            //var color = { r: 255, g: 0, b: 0, a: 255 };
-            context.fillStyle = "rgba(255,0,0,1)";
-            context.fillFlood(50, 75);
-
-        }
-
-        //Circle spec fill
-        var circle_spec = document.getElementById('image_circle_spec');
-        circle_spec.onload = function() {
-
-            // Create a canvas with which we can edit an image
-            var canvas = document.getElementById('canvas_circle_spec');
-            var context = canvas.getContext('2d');
-            context.drawImage(circle, 0, 0);
-
-            // Flood fill the circle starting at point (50, 75) using the color red (255, 0, 0)
-            context.fillStyle = "rgba(255,0,0,1)";
-            context.fillFlood(50, 75, 128, 0, 0, circle.width, circle.height);
-
-        }
-
-        //Star boundary fill
-        var star = document.getElementById('image_star');
-        star.onload = function() {
-
-            // Create a canvas with which we can edit an image
-            var canvas = document.getElementById('canvas_star');
-            var context = canvas.getContext('2d');
-            context.drawImage(star, 0, 0);
-
-            // Flood fill the star starting at point (5, 5) using the color red (255, 0, 0)
-            context.fillStyle = "rgba(255,0,0,1)";
-            context.fillFlood(5, 5, 0, 0, 0, star.width, star.height);
-
-        }
-
-        //Star boundary fill cropped
-        var star_crop = document.getElementById('image_star_crop');
-        star_crop.onload = function() {
-
-            // Create a canvas with which we can edit an image
-            var canvas = document.getElementById('canvas_star_crop');
-            var context = canvas.getContext('2d');
-            context.drawImage(star, 0, 0);
-
-            // Flood fill the star starting at point (5, 5) using the color red (255, 0, 0)
-            context.fillStyle = "rgba(255,0,0,1)";
-            context.fillFlood(30, 30, 128, 20, 20, 80,80);
-
-        }
-
-        //Circle Clear
-        var circle_clear = document.getElementById('image_circle_clear');
-        circle_clear.onload = function() {
-
-            // Create a canvas with which we can edit an image
-            var canvas = document.getElementById('canvas_circle_clear');
-            var context = canvas.getContext('2d');
-            context.drawImage(circle_clear, 0, 0);
-
-            // Flood fill the circle starting at point (50, 75) using the color red (255, 0, 0)
-            context.fillStyle = "rgba(255,0,0,1)";
-            context.fillFlood(50, 75);
-
-            // Flood fill the circle_clear starting at point (50, 75) using the color red (255, 0, 0)
-            context.fillStyle = "rgba(1,0,0,0)";
-            context.fillFlood(50, 75);
-
-        }
-
-        //Circle Clear
-        var circle_tolerance = document.getElementById('image_circle_tolerance');
-        circle_tolerance.onload = function() {
-
-            // Create a canvas with which we can edit an image
-            var canvas = document.getElementById('canvas_circle_tolerance');
-            var context = canvas.getContext('2d');
-            context.drawImage(circle_tolerance, 0, 0);
-           
-            // Test various tolerance levels 
-            context.fillStyle = "rgba(255,0,0,1)";
-            context.fillFlood(50, 75, 255, 0, 0, circle_tolerance.width, circle_tolerance.height);
-            
-            context.fillStyle = "rgba(0,255,0,1)";
-            context.fillFlood(50, 75, 0, 0, 0, circle_tolerance.width, circle_tolerance.height);
-            
-            context.fillStyle = "rgba(0,0,255,1)";
-            context.fillFlood(50, 75, -999, 0, 0, circle_tolerance.width, circle_tolerance.height);
-            
-            context.fillStyle = "rgba(255,255,0,1)";
-            context.fillFlood(50, 75, null, 0, 0, circle_tolerance.width, circle_tolerance.height);
-            
-            context.fillStyle = "rgba(255,255,255,1)";
-            context.fillFlood(50, 75, '123', 0, 0, circle_tolerance.width, circle_tolerance.height);
-
-            context.fillStyle = "#ffffff";
-            context.fillFlood(50, 75, '123', 0, 0, circle_tolerance.width, circle_tolerance.height);            
-
-        }
-
-        //Circle Clear
-        var circle_array = document.getElementById('image_circle_array');
-        circle_array.onload = function() {
-
-            // Create a canvas with which we can edit an image
-            var canvas = document.getElementById('canvas_circle_array');
-            var context = canvas.getContext('2d');
-            context.drawImage(circle_tolerance, 0, 0);
-
-            var image = context.getImageData(0,0,circle_array.width,circle_array.height);
-            var result = floodfill(image.data,50,50,{r:255,g:255,b:0,a:255},128,image.width,image.height);
-            context.putImageData(image,0,0);
-
-        }
-
-        //Circle Clear
-        var circle_close = document.getElementById('image_circle_close');
-        circle_close.onload = function() {
-
-            // Create a canvas with which we can edit an image
-            var canvas = document.getElementById('canvas_circle_close');
-            var context = canvas.getContext('2d');
-            context.drawImage(circle_close, 0, 0);
-           
-            // Test various tolerance levels 
-            context.fillStyle = "rgba(255,0,0,1)";
-            context.fillFlood(50.1, 75, 0, 0, 0, circle_close.width, circle_close.height);
-            
-            context.fillStyle = "rgba(254,0,0,1)";
-            context.fillFlood(50, 75.2, 1, 0, 0, circle_close.width, circle_close.height);
-            
-        }
-
-
-    </script>
+	
 </body>
+
+<script type="text/javascript">
+
+
+
+
+
+
+    //------------------------------------------------------------------------------- STATIC ----------------------------------------------------------------------------------------------
+    
+	
+
+ 
+
+
+
+    var sWidth,sHeight,c1Width,c1Height,imgWidth,imgHeight,c2Width,c2Height,lineThik=2.5,pieType=1;mirror=0;lineType=1;
+    var crossLine=50;
+    
+    var lineThikArray = new Array();
+    lineThikArray[0] = new Image();lineThikArray[1] = new Image();lineThikArray[2] = new Image();lineThikArray[3] = new Image();lineThikArray[4] = new Image();lineThikArray[5] = new Image();
+	lineThikArray[0].src = 'thik1.png';lineThikArray[1].src = 'thik2.png';lineThikArray[2].src = 'thik3.png';lineThikArray[3].src = 'thik4.png';lineThikArray[4].src = 'thik5.png';lineThikArray[5].src = 'thik6.png';
+	var thikRa=[]
+	thikRa[0]=1;thikRa[1]=2.5;thikRa[2]=3.5;thikRa[3]=10;thikRa[4]=17;thikRa[5]=25;
+	
+	
+	var pieTypeArray = new Array();
+	pieTypeArray[0] = new Image();pieTypeArray[1] = new Image();pieTypeArray[2] = new Image();pieTypeArray[3] = new Image();pieTypeArray[4] = new Image();pieTypeArray[5] = new Image(); 
+	pieTypeArray[0].src = 'pie1.png';pieTypeArray[1].src = 'pie3.png';pieTypeArray[2].src = 'pie4.png';pieTypeArray[3].src = 'pie6.png';pieTypeArray[4].src = 'pie12.png';pieTypeArray[5].src = 'pie16.png';
+	var pieTypeRA=[];
+	pieTypeRA[0]=1;pieTypeRA[1]=3;pieTypeRA[2]=4;pieTypeRA[3]=6;pieTypeRA[4]=10;pieTypeRA[5]=16;
+
+	var mirrorArray = new Array();
+	mirrorArray[0] = new Image();mirrorArray[1] = new Image();
+	mirrorArray[0].src = 'mirror1.png';mirrorArray[1].src = 'mirror2.png';
+	var mirrorRA=[];
+	mirrorRA[0]=1;mirrorRA[1]=2;
+
+	var lineTypeArray = new Array();
+	lineTypeArray[0] = new Image();lineTypeArray[1] = new Image();lineTypeArray[2] = new Image();lineTypeArray[3] = new Image();lineTypeArray[4] = new Image();
+	lineTypeArray[0].src = 'line1.png';lineTypeArray[1].src = 'line2.png';lineTypeArray[2].src = 'line3.png';lineTypeArray[3].src = 'line4.png';lineTypeArray[4].src = 'line5.png';
+	var lineTypeRA=[];
+	lineTypeRA[0]=1;lineTypeRA[1]=2;lineTypeRA[2]=3;lineTypeRA[3]=4;lineTypeRA[4]=5;
+
+    //================================================================================ VAR ===============================================================================================
+	
+    var staticBit=true;
+    var width=window.innerWidth;
+    var height=window.innerHeight;
+    window.onresize = function(event) 
+    {
+    	var width=window.innerWidth;
+    	var height=window.innerHeight;
+    }
+   
+
+
+    var sideW=0.1*width; topH=0.05*height;
+    var frameWper=0.8,frameHper=0.8,frameW=width*frameWper,frameH=height*frameHper,frameXpos=(width-width*frameWper)/2,frameYpos=(height-height*frameHper)/2;
+    var canvasWper=0.75,canvasHper=0.75,canvasW=width*canvasWper,canvasH=height*canvasHper,canvasXpos=(width-width*canvasWper)/2,canvasYpos=(height-height*canvasHper)/2;
+    var btnSizeper=0.07,btnW=width*btnSizeper,btnH=btnW,btnLeftSpace=15,btnTopSpace=0.06*height,btnBottomSpace=0.05*height,btnRightSpace=width*0.05,btn2btnSpace=width*0.03;
+    var btnLineXpos=-btnLeftSpace,btnLineYpos=frameYpos;
+    var btnPyeXpos=-btnLeftSpace,btnPyeYpos=frameYpos+(btnTopSpace+btnH)*1;
+    var btnMirXpos=-btnLeftSpace,btnMirYpos=frameYpos+(btnTopSpace+btnH)*2;
+
+    
+    
+    var canvas = document.getElementById('myCanvas');
+    var context = canvas.getContext('2d');
+    var canvas2 = document.getElementById('myCanvas2');
+    var context2 = canvas2.getContext('2d');
+	context.translate(width/ 2, height / 2); 
+
+	var canvasP = document.getElementById('paperCanvas');
+    var contextP = canvasP.getContext('2d');
+    var canvasS = document.getElementById('saveCanvas');
+    var contextS = canvasS.getContext('2d');
+    //contextP.translate(300, 300);
+
+	var centerOffsetX=width/2, centerOffsetY=height/2
+	context2.fillStyle ="#ffffff";
+	context2.fillRect(0, 0,width*3, height*3); 
+	context2.translate(centerOffsetX, centerOffsetY);
+	
+
+   	var pointsX=[], pointsY=[], pointsXc=[], pointsYc=[],Xco=[], Yco=[],Xmco=[], Ymco=[],lastPointX=[],lastPointY=[], pointsXm=[],pointsYm=[],pointsXmc=[],pointsYmc=[],lastPointXm=[],lastPointYm=[];
+    var tX=[],tY=[],tYm=[],tXm=[];
+	var pX=[],pY=[],pYm=[],pXm=[];
+    var startMove=false;
+    
+    var canvasC = document.getElementById('Color');
+	var contextC = canvasC.getContext('2d');
+	//===========================================================image to color canvas================================
+	var imageObj = new Image();
+	
+	imageObj.crossOrigin = 'anonymous'; 
+	imageObj.src = 'colors.png'+ '?' + new Date().getTime();;
+	imageObj.onload = function() 
+	{
+		contextC.drawImage(imageObj, 0, 0);
+	};
+	
+
+	var colorShow = document.getElementById('ColorShow');
+	var contextCS = colorShow.getContext('2d');
+	contextCS.fillStyle = "000000";
+	contextCS.fillRect(0, 0, width, height);
+
+    var deviceOrientationData ={alpha:0,beta:0,gamma:0};//init with 0 as defaults 
+    var first=0,firstUndo=true;
+    var bitFill=false,bitDrawLine=false,bitDrawCir=false,bitDrawCirFill=false;
+    var touchX=0;
+    var chooseColor="000000"
+    var x=0;
+    var y=0;
+    var z=0;
+    var startY;
+    var startZ;
+    var frameBorderW=15;
+    var frameBorderH=11;
+    var imageBorder=40;
+    var L1=900;
+    var bitTouch=false;
+    var userX=0;
+	var userY=0;
+	var firstX=0;
+	var firstY=0;
+	var prevTouchX=-1;
+	var prevTouchY=-1;
+	var btnLeftSpace=200;
+	var btnTopSpace=180;
+	var mouseX=0,mouseY=0;
+	var historyUndo = new Array(), historyRedo = new Array(), maxHistory = 50;
+	var borderColor=1;
+	var masterina=
+	{
+		radius1:200,
+		radius2:210,
+		color:'#000000',
+		line:10,
+		posX:Math.round(width/2,0),
+		posY:Math.round(height/2,0),
+		move:false,
+		scale:false,
+		draw:false,
+		dX:0,
+		dY:0
+	}
+  	//historyUndo.push(ctx2.getImageData(0, 0, canvas2.width, canvas2.height));
+	//undo();
+
+//=======================================================================================================================================================================
+//============================================================================================================FUNC ======================================================
+//=======================================================================================================================================================================
+
+//=======================================================================================  floodFill==============================================================
+
+
+
+
+
+
+ //=============================================== choose color =================================================================
+
+$('#Color').mousemove(function(e) {   
+   
+    var c = this.getContext('2d');
+    var p = c.getImageData((mouseX-width*0.91)*300/(width*0.08), (mouseY-height*0.18)*150/(height*0.16), 1, 1).data; 
+    var hex = "#" +("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
+    chooseColor=hex;
+    contextCS.fillStyle = hex;
+	contextCS.fillRect(0, 0,width, height);
+	
+});
+$('#Color').mouseup(function(e) {
+    masterina.color=chooseColor;
+    contextCS.fillStyle = masterina.color;
+	contextCS.fillRect(0, 0,width, height);
+});
+$('#Color').mouseout(function(e) {
+   
+    contextCS.fillStyle =masterina.color;
+	contextCS.fillRect(0, 0,width, height);
+});
+
+ window.onresize = function(event) // ============================ rsize =================================================================
+    {
+    	width=window.innerWidth;
+    	height=window.innerHeight;
+    };
+ //============================================================================================================================================
+//====================================================================MOUSE=================================================================
+document.addEventListener("mousedown", mouseDownFunc, true);
+document.addEventListener("mousemove", mouseMoveFunc, true);
+document.addEventListener("mouseup", mouseUpFunc, true);
+
+
+function mouseDownFunc(e)
+{		
+		if ((bitFill)&&((e.clientX<width*0.9)&&(e.clientY<height*0.9)&&(e.clientX>width*0.1)&&(e.clientY>height*0.1)))// check if not floodfill
+			{
+				floodFill(e.clientX,e.clientY);
+			}
+
+	  	
+	  	if ((!(masterina.draw))&&(Math.sqrt((e.clientX-masterina.posX)**2+(e.clientY-masterina.posY)**2)>(masterina.radius1-masterina.line/2))
+		 &&(Math.sqrt((e.clientX-masterina.posX)**2+(e.clientY-masterina.posY)**2)<(masterina.radius2-masterina.line/2)))
+		{
+			masterina.scale=true;
+		}
+		if ((!(masterina.draw))&&(Math.sqrt((e.clientX-masterina.posX)**2+(e.clientY-masterina.posY)**2)>(masterina.radius2-masterina.line/2))
+		 &&(Math.sqrt((e.clientX-masterina.posX)**2+(e.clientY-masterina.posY)**2)<(masterina.radius2+masterina.line/2)))
+		{
+			masterina.move=true;
+
+		}
+
+		if ((!(masterina.move))&&(lineType!=1)&&(!(bitFill))&&(!(masterina.scale))&&(Math.sqrt((e.clientX-masterina.posX)**2+(e.clientY-masterina.posY)**2)<(masterina.radius1-masterina.line/2)))
+	  	{
+	  		if (!(bitTouch))
+	  		{
+	  			toUndo();
+	  		}
+	  		
+	  	}
+
+		bitTouch=true;
+  	
+}
+	
+function mouseMoveFunc(e)
+{	
+
+	mouseX=e.clientX;mouseY=e.clientY;
+	if ((!(masterina.scale))&&(Math.sqrt((e.clientX-masterina.posX)**2+(e.clientY-masterina.posY)**2)<(masterina.radius1-masterina.line/2)))
+  	{
+		drawCross(e.clientX-masterina.posX, e.clientY-masterina.posY);
+	}
+	else{
+				drawMasterina();
+		}	
+	if ((!(masterina.move))&&(!(masterina.scale))&&(Math.sqrt((e.clientX-masterina.posX)**2+(e.clientY-masterina.posY)**2)<(masterina.radius1-masterina.line/2)))
+  	{
+  		masterina.draw=true;
+
+  	}
+  	else
+  	{
+  		masterina.draw=false;
+  		startMove=false;
+  	}
+//=================================================================================================DRAW=======================================================	
+	
+	if (bitTouch){
+
+		userX=e.clientX;
+		userY=e.clientY;
+		if (masterina.draw)
+		{
+			if (!(bitFill))// check if not floodfill
+			{/*
+				if (lineType==1){
+				drawPie(userX-masterina.posX, userY-masterina.posY);}
+				*/
+				if (lineType==2){
+				drawPieDots(userX-masterina.posX, userY-masterina.posY);}
+				if (lineType==3){
+				drawPieLine(userX-masterina.posX, userY-masterina.posY);}
+				if (lineType==4){
+				drawPieCir(userX-masterina.posX, userY-masterina.posY);}
+				if (lineType==5){
+				drawPieCirFill(userX-masterina.posX, userY-masterina.posY);}
+				
+			}
+		}
+//===================================================================================================MOVE==============================================
+	if (masterina.move)
+	{
+		context2.translate(e.clientX-masterina.dX,e.clientY-masterina.dY);
+		context.translate(e.clientX-masterina.dX,e.clientY-masterina.dY);
+		masterina.posX+=(e.clientX-masterina.dX);masterina.posY+=(e.clientY-masterina.dY);
+		drawMasterina();
+	}
+//=================================================================================================SCALE================================================
+	if (masterina.scale){
+		if (e.clientX>masterina.posX)
+		{
+			masterina.radius1+=(e.clientX-masterina.dX);
+			masterina.radius2+=(e.clientX-masterina.dX);
+		}
+		else
+		{
+			masterina.radius1-=(e.clientX-masterina.dX);
+			masterina.radius2-=(e.clientX-masterina.dX);
+		}
+		if (masterina.radius1<30)
+		{
+			masterina.radius1=30;masterina.radius2=40;
+		}
+		drawMasterina(userX-masterina.posX, userY-masterina.posY);
+	}
+
+	}
+	
+	if ((!(masterina.draw))&&(Math.sqrt((e.clientX-masterina.posX)**2+(e.clientY-masterina.posY)**2)>(masterina.radius1-masterina.line/2))
+	 &&(Math.sqrt((e.clientX-masterina.posX)**2+(e.clientY-masterina.posY)**2)<(masterina.radius2+masterina.line/2)))
+	{
+		document.body.style.cursor = 'pointer';
+		
+	}
+	else
+	{
+		document.body.style.cursor = 'crosshair';
+		
+	}
+	masterina.dX=e.clientX;masterina.dY=e.clientY;
+}
+
+function mouseUpFunc(e)
+{
+   userX=0;
+	userY=0;
+	bitTouch=false;
+
+	startMove=false;
+	masterina.move=false
+	masterina.scale=false
+	
+	
+	if (bitDrawLine)
+		{drawPieLineTo2(e.clientX-masterina.posX,e.clientY-masterina.posY)
+		firstUndo=false;}
+	bitDrawLine=false;
+	
+	if (bitDrawCir)
+		{drawPieCirTo2(e.clientX-masterina.posX,e.clientY-masterina.posY)
+		firstUndo=false;}
+	bitDrawCir=false;
+	
+	if (bitDrawCirFill)
+		{drawPieCirFillTo2(e.clientX-masterina.posX,e.clientY-masterina.posY)
+		firstUndo=false;}
+	bitDrawCirFill=false;
+	
+	
+	if (masterina.draw)
+	{
+			
+	}
+	masterina.draw=false;
+}
+
+function undo()
+{
+	if (historyUndo.length > 0)
+		{
+			context2.putImageData(historyUndo.pop(), 0, 0);	
+			console.log(historyUndo.length)	;	
+
+		}
+		
+}
+function toUndo()
+{
+	//===================================================================to undo=============================
+	    	if (historyUndo.length == maxHistory)// to undo array
+					{
+						historyUndo.shift();
+					}
+					
+					historyUndo.push(context2.getImageData(0, 0, canvas2.width, canvas2.height));
+					console.log(historyUndo.length)	;	
+			//=============================================================================================================
+}
+
+function floodFill(fX,fY)
+{
+	toUndo();
+		pointsXc=piePoints(fX-masterina.posX,fY-masterina.posY)[0];
+		pointsYc=piePoints(fX-masterina.posX,fY-masterina.posY)[1];
+		pointsXmc=piePoints(fX-masterina.posX,fY-masterina.posY)[2];
+		pointsYmc=piePoints(fX-masterina.posX,fY-masterina.posY)[3];
+		for (var i = 0; i < pieType; i++)
+	    {
+			context2.translate(-width/2,-height/2);
+			context2.fillStyle = masterina.color;
+	        context2.fillFlood(Math.floor(pointsXc[i]+masterina.posX), Math.floor(pointsYc[i]+masterina.posY), 80,0, 0,width, height);
+			context2.translate(width/2,height/2);
+			
+		}
+
+		
+			
+
+}
+		
+ </script>
+ //=========================================================================================================================================================
+
+ <script type="text/paperscript" canvas="paperCanvas">
+       //var fs = require('fs');
+      var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25,p26,p27,p28,p29,p30,p31,p32;
+       var pArray=[p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25,p26,p27,p28,p29,p30,p31,p32];
+       var pArrayLength =pArray.length;
+      var path;//,path1;
+var point;
+var textItem = new PointText({
+    //content: 'Click and drag to draw a line.',
+    point: new Point(20, 30),
+    fillColor: 'black',
+});
+
+function onMouseDown(event) {
+
+if ((lineType==1)&&(!(bitFill))&&masterina.draw)
+ 	{
+		pointsXc=piePoints(event.point.x-masterina.posX,event.point.y-masterina.posY)[0];
+		pointsYc=piePoints(event.point.x-masterina.posX,event.point.y-masterina.posY)[1];
+		pointsXmc=piePoints(event.point.x-masterina.posX,event.point.y-masterina.posY)[2];
+		pointsYmc=piePoints(event.point.x-masterina.posX,event.point.y-masterina.posY)[3];
+		
+
+	   for (var iA = 0; iA < pieType; iA++)
+	    {
+	    	
+	   		if (pArray[iA]) {
+	       	pArray[iA].selected = false;}
+
+	       	pArray[iA] = new Path({
+	        segments: [[pointsXc[iA]+masterina.posX,pointsYc[iA]+masterina.posY]],
+	        strokeColor:masterina.color,
+	        strokeCap :'round' 
+	         });
+	       	pArray[iA].strokeWidth = lineThik;
+
+	       	if (mirror==2){
+	       		if (pArray[iA+pieType]) {
+			       	pArray[iA+pieType].selected = false;}
+
+			       	pArray[iA+pieType] = new Path({
+			        segments: [[pointsXmc[iA]+masterina.posX,pointsYmc[iA]+masterina.posY]],
+			        strokeColor: masterina.color,
+			        strokeCap :'round' 
+			         });
+			       	pArray[iA+pieType].strokeWidth = lineThik;
+			     }  	
+
+	    }
+	    masterina.mouseUp=true;
+	    
+	  }
+    
+}
+
+
+function onMouseDrag(event)
+ {
+ 	if ((lineType==1)&&(!(bitFill))&&masterina.draw)
+ 	{
+			pointsXc=piePoints(event.point.x-masterina.posX,event.point.y-masterina.posY)[0];
+			pointsYc=piePoints(event.point.x-masterina.posX,event.point.y-masterina.posY)[1];
+			pointsXmc=piePoints(event.point.x-masterina.posX,event.point.y-masterina.posY)[2];
+			pointsYmc=piePoints(event.point.x-masterina.posX,event.point.y-masterina.posY)[3];
+
+			for (var iA = 0; iA <pieType; iA++)
+		    {
+		    	pArray[iA].add(pointsXc[iA]+masterina.posX,pointsYc[iA]+masterina.posY);
+		    	 if (mirror==2){
+		    	 	pArray[iA+pieType].add(pointsXmc[iA]+masterina.posX,pointsYmc[iA]+masterina.posY);}
+
+		    }
+		    
+		}
+	}
+
+// When the mouse is released, we simplify the path:
+function onMouseUp(event)
+ {
+
+	if ((lineType==1)&&masterina.mouseUp&&(!(bitFill)))
+ 	{	
+ 		
+ 		if (pArray[0].length<10000)
+ 		{
+		   for (var iA = 0; iA <pieType; iA++)
+		    {
+		    	pArray[iA].simplify(20);
+		    	if (mirror==2){
+		    	pArray[iA+pieType].simplify(20);}
+		    }
+	    }
+	    setTimeout(function(){
+	    	toUndo();
+	   context2.drawImage(canvasP,-width/2+(width/2-masterina.posX),-height/2+(height/2-masterina.posY));
+	   for (var iA = 0; iA <pieType; iA++)
+		    {
+		    	pArray[iA].remove();
+		    	if (mirror==2){
+		    	pArray[iA+pieType].remove();}
+		    }
+
+		}, 10);
+		
+	}
+
+   
+
+}
+
+
+
+//var context2 = myCanvas2.getContext('2d');
+
+//call its drawImage() function passing it the source canvas directly
+
+    </script>
+
 </html>
+
+
+
+	   
+		
